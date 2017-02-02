@@ -5,4 +5,4 @@ queue:
     min_backoff_seconds: 2
     max_backoff_seconds: 8
     max_doublings: 1
-    task_retry_limit: 2
+    task_retry_limit: 1
