@@ -21,3 +21,9 @@ class WebhookHandler(webutil.RequestHandler):
             payload = JSON.stringify(body))
         LOG.info('Task created: %s, eta: %s' % (task.name, task.eta))
         self.send_json(task.name)
+
+class ConsumeHandler(webutil.RequestHandler):
+    def post(self):
+        body = self.read_json()
+        LOG.info('content: %s' % (JSON.stringify(body, indent=True)))
+        self.send_json('OK')

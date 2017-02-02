@@ -8,5 +8,6 @@ class PingHandler(webutil.RequestHandler):
 
 app = webapp2.WSGIApplication([
     ('/api/ping', PingHandler),
-    ('/api/github/webhook', github.WebhookHandler)
+    ('/api/github/webhook', github.WebhookHandler),
+    ('/api/github/consume', github.ConsumeHandler)
 ])
