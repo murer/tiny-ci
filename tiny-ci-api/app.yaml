@@ -1,9 +1,6 @@
-application: tiny-ci
-version: last
 runtime: python27
 api_version: 1
 threadsafe: yes
-module: default
 
 handlers:
 - url: /favicon\.ico
