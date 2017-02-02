@@ -10,10 +10,7 @@ handlers:
   static_files: favicon.ico
   upload: favicon\.ico
 
-#- url: /s/ping
-#  script: src.ping.app
-
-- url: /s/.*
+- url: /api/.*
   script: tinyciapi.main.app
 
 libraries:
