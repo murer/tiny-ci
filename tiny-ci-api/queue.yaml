@@ -1,0 +1,8 @@
+queue:
+- name: pushs
+  rate: 1/s
+  retry_parameters:
+    min_backoff_seconds: 2
+    max_backoff_seconds: 8
+    max_doublings: 1
+    task_retry_limit: 2
