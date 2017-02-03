@@ -1,6 +1,6 @@
 from jsonutil import JSON
 import webapp2
-
+import urllib
 
 class RequestHandler(webapp2.RequestHandler):
 
@@ -15,3 +15,7 @@ class RequestHandler(webapp2.RequestHandler):
 
     def read_json(self):
         return JSON.parse(self.request.body) if self.request.body else None
+
+    def send_redirect(self, url, params):
+        params = urllib.urlencode(params)
+        return self.redirect('%s?%s' % (url, params))
