@@ -40,10 +40,55 @@ def req(method, url, headers = {}, payload = '', expects = [200]):
     finally:
         close(conn)
 
+class Response(object):
+    def __init__(self, status, headers, body):
+        self.status = status
+        self.raw_headers = headers
+        self.body = body
+        self.headers = dict(headers)
+
+
+class Request(object):
+    def __init__(self, method, url):
+        self._method = method
+        self._url = url
+        self._headers = {
+            'User-Agent': 'tiny-ci'
+        }
+        self._payload = None
+
+    def execute(self, expects = [200]):
+        self._headers['User-Agent'] = self._headers.get('User-Agent', 'tiny-ci')
+        parsed = urlparse(self._url)
+        host = parsed.netloc
+        uri = parsed.path
+        if(parsed.query != ''):
+            uri = uri + '?' + parsed.query
+        conn = None
+        if(parsed.scheme == 'https'):
+            conn = httplib.HTTPSConnection(parsed.hostname, parsed.port or 443)
+        else:
+            conn = httplib.HTTPConnection(parsed.hostname, parsed.port or 80)
+        try:
+            conn.request(self._method, uri, self._payload, self._headers)
+            resp = conn.getresponse()
+            body = resp.read()
+            if resp.status not in expects:
+                raise Error('Status: %d %s %sri' % (resp.status, resp.reason, body))
+            return Response(resp.status, resp.getheaders(), body)
+        finally:
+            close(conn)
+
 
 def __main():
-    obj = req('GET', 'https://api.github.com/meta')
-    print obj
+    req = Request('GET', 'https://api.github.com/meta')
+    resp = req.execute()
+    print resp.status
+    print resp.raw_headers
+    print resp.headers['content-type']
+    print resp.body
+    #obj = req('GET', 'https://api.github.com/meta')
+    #print obj
 
 if __name__ == '__main__':
     __main()
