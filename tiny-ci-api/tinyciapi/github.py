@@ -16,7 +16,8 @@ class OAuthLoginHandler(webutil.RequestHandler):
 
 class OAuthCallbackHandler(webutil.RequestHandler):
     def get(self):
-        print 'aaaa'
+        code = self.request.GET['code']
+        self.send_json(code)
 
 class WebhookHandler(webutil.RequestHandler):
     def post(self):
