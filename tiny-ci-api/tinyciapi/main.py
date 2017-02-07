@@ -15,7 +15,7 @@ app = webapp2.WSGIApplication([
     ('/api/github/webhook', github.WebhookHandler),
     ('/api/github/consume', github.ConsumeHandler),
 
-    ('/api/googleauth/oauthlogin', googleauth.OAuthLoginHandler),
-    ('/api/googleauth/oauthcallback', googleauth.OAuthCallbackHandler)
+    ('/api/google/oauthlogin', googleauth.OAuthLoginHandler),
+    ('/api/google/oauthcallback', googleauth.OAuthCallbackHandler)
 
 ])
