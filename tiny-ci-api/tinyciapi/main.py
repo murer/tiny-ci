@@ -1,7 +1,7 @@
 import webapp2
 import webutil
-import github
-import googleauth
+import githubhandler
+import googlehandler
 
 class PingHandler(webutil.RequestHandler):
     def get(self):
@@ -12,10 +12,10 @@ app = webapp2.WSGIApplication([
 
     ('/api/github/oauthlogin', github.OAuthLoginHandler),
     ('/api/github/oauthcallback', github.OAuthCallbackHandler),
-    ('/api/github/webhook', github.WebhookHandler),
-    ('/api/github/consume', github.ConsumeHandler),
+    ('/api/github/webhook', githubhandler.WebhookHandler),
+    ('/api/github/consume', githubhandler.ConsumeHandler),
 
-    ('/api/google/oauthlogin', googleauth.OAuthLoginHandler),
-    ('/api/google/oauthcallback', googleauth.OAuthCallbackHandler)
+    ('/api/google/oauthlogin', googlehandler.OAuthLoginHandler),
+    ('/api/google/oauthcallback', googlehandler.OAuthCallbackHandler)
 
 ])
