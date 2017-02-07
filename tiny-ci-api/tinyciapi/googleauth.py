@@ -8,7 +8,8 @@ class OAuthLoginHandler(webutil.RequestHandler):
             'scope': 'https://www.googleapis.com/auth/compute',
             'redirect_uri': '%s/api/google/oauthcallback' % (self.request.host_url),
             'client_id': '235531131885-ksue4g0hjtfobgh1khtq51q77coetehg.apps.googleusercontent.com',
-            'access_type': 'offline'
+            'access_type': 'offline',
+            'prompt': 'consent'
         })
 
 class OAuthCallbackHandler(webutil.RequestHandler):
