@@ -10,8 +10,8 @@ class PingHandler(webutil.RequestHandler):
 app = webapp2.WSGIApplication([
     ('/api/ping', PingHandler),
 
-    ('/api/github/oauthlogin', github.OAuthLoginHandler),
-    ('/api/github/oauthcallback', github.OAuthCallbackHandler),
+    ('/api/github/oauthlogin', githubhandler.OAuthLoginHandler),
+    ('/api/github/oauthcallback', githubhandler.OAuthCallbackHandler),
     ('/api/github/webhook', githubhandler.WebhookHandler),
     ('/api/github/consume', githubhandler.ConsumeHandler),
 

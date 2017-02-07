@@ -32,17 +32,18 @@ class Request(object):
     def __init__(self, method, url):
         self._method = method
         self._url = url
-        self._headers = {
+        self.headers = {
             'User-Agent': 'tiny-ci'
         }
         self._payload = None
 
     def send_form(self, payload):
+        self.headers['Content-Type'] = self.headers.get('Content-Type', 'application/x-www-form-urlencoded')
         self._payload = urllib.urlencode(payload or {})
         return self
 
     def execute(self, expects = [200]):
-        self._headers['User-Agent'] = self._headers.get('User-Agent', 'tiny-ci')
+        self.headers['User-Agent'] = self.headers.get('User-Agent', 'tiny-ci')
         parsed = urlparse.urlparse(self._url)
         host = parsed.netloc
         uri = parsed.path
@@ -54,7 +55,8 @@ class Request(object):
         else:
             conn = httplib.HTTPConnection(parsed.hostname, parsed.port or 80)
         try:
-            conn.request(self._method, uri, self._payload, self._headers)
+            print 'xxxx', self._method, uri, self._payload, self.headers
+            conn.request(self._method, uri, self._payload, self.headers)
             resp = conn.getresponse()
             body = resp.read()
             if resp.status not in expects:
