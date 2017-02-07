@@ -3,6 +3,7 @@ import webapp2
 import logging as LOG
 from jsonutil import JSON
 from google.appengine.api import taskqueue
+from httputil import Request as HTTP
 
 # https://api.github.com/meta
 
@@ -17,7 +18,14 @@ class OAuthLoginHandler(webutil.RequestHandler):
 class OAuthCallbackHandler(webutil.RequestHandler):
     def get(self):
         code = self.request.GET['code']
-        self.send_json(code)
+        req = HTTP('POST', 'https://github.com/login/oauth/access_token')
+        resp = req.send_form({
+            'client_id': 'ccfa4f997ce81263aa9b',
+            'client_secret': '5c7d21c0558bdb5b2b6c61a8d376a98c7a6ce792',
+            'code': code,
+            'redirect_uri': 'https://tiny-ci.appspot.com/api/github/oauthcallback'
+        }).execute()
+        self.send_json(resp.body_form().get('access_token'))
 
 class WebhookHandler(webutil.RequestHandler):
     def post(self):

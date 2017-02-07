@@ -1,7 +1,7 @@
 import httplib
 import urllib
+import urlparse
 from jsonutil import JSON
-from urlparse import urlparse
 
 class Error(Exception):
     """Exceptions"""
@@ -22,6 +22,11 @@ class Response(object):
     def body_json(self):
         return JSON.parse(self.body) if self.body else None
 
+    def body_form_array(self):
+        return urlparse.parse_qs(self.body)
+
+    def body_form(self):
+        return dict(urlparse.parse_qsl(self.body))
 
 class Request(object):
     def __init__(self, method, url):
@@ -32,9 +37,13 @@ class Request(object):
         }
         self._payload = None
 
+    def send_form(self, payload):
+        self._payload = urllib.urlencode(payload or {})
+        return self
+
     def execute(self, expects = [200]):
         self._headers['User-Agent'] = self._headers.get('User-Agent', 'tiny-ci')
-        parsed = urlparse(self._url)
+        parsed = urlparse.urlparse(self._url)
         host = parsed.netloc
         uri = parsed.path
         if(parsed.query != ''):
