@@ -1,7 +1,7 @@
 import webapp2
-import webutil
-import githubhandler
-import googlehandler
+from util import webutil
+from handler import githubhandler
+from handler import googlehandler
 
 class PingHandler(webutil.RequestHandler):
     def get(self):

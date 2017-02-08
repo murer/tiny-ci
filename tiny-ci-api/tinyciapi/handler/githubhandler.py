@@ -1,9 +1,9 @@
-import webutil
 import webapp2
 import logging as LOG
-from jsonutil import JSON
 from google.appengine.api import taskqueue
-from httputil import Request as HTTP
+from tinyciapi.util import webutil
+from tinyciapi.util.jsonutil import JSON
+from tinyciapi.util.httputil import Request as HTTP
 
 # https://api.github.com/meta
 

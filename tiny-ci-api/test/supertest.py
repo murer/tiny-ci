@@ -2,7 +2,7 @@ import unittest
 import httplib
 import json as JSON
 from gaeserver import GaeTestServer
-from tinyciapi.httputil import Request as HTTP
+from tinyciapi.util.httputil import Request as HTTP
 
 class Error(Exception):
     """ Error """

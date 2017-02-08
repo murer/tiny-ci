@@ -1,5 +1,5 @@
-import webutil
-from httputil import Request as HTTP
+from tinyciapi.util import webutil
+from tinyciapi.util.httputil import Request as HTTP
 
 class OAuthLoginHandler(webutil.RequestHandler):
     def get(self):
