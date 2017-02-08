@@ -1,9 +1,10 @@
 import unittest
-import supertest
+from supertest import TestCase
+from supertest import R
 import httplib
 from google.appengine.ext import ndb
 
-class OneTestCase(supertest.TestCase):
+class OneTestCase(TestCase):
 
     def test_one(self):
         class TestModel(ndb.Model):
@@ -17,7 +18,9 @@ class OneTestCase(supertest.TestCase):
         self.test_one()
 
     def test_web(self):
-        """self.assertEqual('pong', testcase.http_json('GET', '/s/ping')[0])"""
+        resp = R('GET', '/api/ping').execute()
+        self.assertEqual('application/json; charset=utf-8', resp.headers['content-type'])
+        self.assertEqual('OK', resp.body_json())
 
     def test_web_twice(self):
         self.test_web()

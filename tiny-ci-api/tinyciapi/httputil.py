@@ -55,7 +55,6 @@ class Request(object):
         else:
             conn = httplib.HTTPConnection(parsed.hostname, parsed.port or 80)
         try:
-            print 'xxxx', self._method, uri, self._payload, self.headers
             conn.request(self._method, uri, self._payload, self.headers)
             resp = conn.getresponse()
             body = resp.read()

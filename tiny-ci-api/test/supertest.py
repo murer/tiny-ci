@@ -2,6 +2,7 @@ import unittest
 import httplib
 import json as JSON
 from gaeserver import GaeTestServer
+from tinyciapi.httputil import Request as HTTP
 
 class Error(Exception):
     """ Error """
@@ -18,3 +19,9 @@ class TestCase(unittest.TestCase):
 
     def tearDown(self):
         gae.shutdown()
+
+class R(HTTP):
+
+    def __init__(self, *args, **kwargs):
+        super(R, self).__init__(*args, **kwargs)
+        self._url = 'http://localhost:%s%s' % (gae.port, self._url)
