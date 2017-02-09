@@ -8,6 +8,9 @@ from tinyciapi.service.cryptservice import TokenMixin
 
 # https://api.github.com/meta
 
+class Error(Exception):
+    """Exceptions"""
+
 class GithubProjectToken(TokenMixin):
     def __init__(self):
         self.gh = None
@@ -58,6 +61,8 @@ class WebhookHandler(webutil.RequestHandler):
         LOG.info('remove: %s' % (self.request.remote_addr))
         LOG.info('headers: %s' % (self.request.headers))
         body = self.read_json()
+        if body.repository.full_name != token.prj:
+            raise Error('forbidden')
         LOG.info('content: %s' % (JSON.stringify(body, indent=True)))
         task = taskqueue.add(
             queue_name = 'pushs',
