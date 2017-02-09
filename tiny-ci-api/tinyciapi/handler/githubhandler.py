@@ -20,10 +20,14 @@ class GithubToken(TokenMixin):
 class ComputeURLHandler(webutil.RequestHandler):
     def post(self):
         params = self.read_json()
-        ret = GithubProjectToken()
-        ret.gh = GithubToken.dec(params['token']).gh
-        ret.prj = params['project']
-        self.send_json(ret.enc())
+        token = GithubProjectToken()
+        token.gh = GithubToken.dec(params['token']).gh
+        token.prj = params['project']
+        code = token.enc()
+        self.send_json({
+            'code': code,
+            'url': 'https://tiny-ci.appspot.com/api/github/webhook/%s' % (code)
+        })
 
 class OAuthLoginHandler(webutil.RequestHandler):
     def get(self):

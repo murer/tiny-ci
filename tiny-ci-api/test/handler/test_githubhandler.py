@@ -14,10 +14,11 @@ class OneTestCase(TestCase):
             'project': 'murer/tiny-ci'
         }).execute()
         self.assertEqual('application/json; charset=utf-8', resp.headers['content-type'])
-        token = resp.body_json()
-        token = githubhandler.GithubProjectToken.dec(token)
+        obj = resp.body_json()
+        token = githubhandler.GithubProjectToken.dec(obj['code'])
         self.assertEqual('murer/tiny-ci', token.prj)
         self.assertTrue(token.gh)
+        self.assertTrue(obj['url'])
 
 if __name__ == '__main__':
         unittest.main()
