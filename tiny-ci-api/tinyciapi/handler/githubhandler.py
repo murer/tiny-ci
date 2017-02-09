@@ -61,8 +61,8 @@ class WebhookHandler(webutil.RequestHandler):
         LOG.info('remove: %s' % (self.request.remote_addr))
         LOG.info('headers: %s' % (self.request.headers))
         body = self.read_json()
-        if body.repository.full_name != token.prj:
-            raise Error('forbidden')
+        if body['repository']['full_name'] != token.prj:
+            raise Error('forbidden: %s - %s ' % (body['repository']['full_name'], token.prj))
         LOG.info('content: %s' % (JSON.stringify(body, indent=True)))
         task = taskqueue.add(
             queue_name = 'pushs',
