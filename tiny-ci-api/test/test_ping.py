@@ -1,7 +1,5 @@
-import unittest
 from supertest import TestCase
 from supertest import R
-import httplib
 from google.appengine.ext import ndb
 
 class OneTestCase(TestCase):

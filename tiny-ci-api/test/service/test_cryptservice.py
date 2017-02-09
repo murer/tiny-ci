@@ -1,5 +1,4 @@
 from test.supertest import TestCase
-import unittest
 from tinyciapi.service.cryptservice import crypt
 
 class CryptTestCase(TestCase):
