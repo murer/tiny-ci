@@ -20,7 +20,7 @@ class AES(object):
         return iv + cipher.encrypt(plain)
 
     def dec(self, code):
-        if len(code) <= 16:
+        if len(code) < 16:
             raise Error('too small')
         iv = code[:16]
         code = code[16:]
