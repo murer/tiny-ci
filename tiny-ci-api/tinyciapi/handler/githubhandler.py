@@ -12,6 +12,10 @@ class GithubToken(TokenMixin):
     def __init__(self):
         self.gh = None
 
+class ComputeURLHandler(webutil.RequestHandler):
+    def post(self):
+        "aaaaa"
+
 class OAuthLoginHandler(webutil.RequestHandler):
     def get(self):
         self.send_redirect('https://github.com/login/oauth/authorize', {
