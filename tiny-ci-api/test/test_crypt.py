@@ -6,8 +6,11 @@ from supertest import TestCase
 class CodecTestCase(TestCase):
 
     def assertOneCrypt(self, crypt, plain):
-        code = crypt.enc(plain)
-        self.assertEqual(plain, crypt.dec(code))
+        code1 = crypt.enc(plain)
+        self.assertEqual(plain, crypt.dec(code1))
+        code2 = crypt.enc(plain)
+        self.assertEqual(plain, crypt.dec(code2))
+        self.assertNotEqual(code1, code2)
 
     def assertCrypt(self, plain):
         self.assertOneCrypt(AES('abcdefghijklmnopqrstuvwxyz012345'), plain)
