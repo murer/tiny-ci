@@ -1,10 +1,23 @@
 import base64
 
 def b64enc(data):
-    return base64.urlsafe_b64encode(data).rstrip('=')
+    return base64.b64encode(data)
 
 def b64dec(data):
-    b = 4 - (len(data) % 4)
-    if b < 4:
-        data += (b * '=')
     return base64.b64decode(data)
+
+def ub64enc(data):
+    return base64.urlsafe_b64encode(data).rstrip('=')
+
+def ub64dec(data):
+    r = len(data) % 4
+    if r:
+        r = 4 - r
+        data += ('=' * r)
+    return base64.urlsafe_b64decode(data)
+
+def enc(data):
+    return ub64enc(data)
+
+def dec(data):
+    return ub64dec(data)
