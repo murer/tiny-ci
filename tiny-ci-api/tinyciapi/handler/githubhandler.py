@@ -8,13 +8,22 @@ from tinyciapi.service.cryptservice import TokenMixin
 
 # https://api.github.com/meta
 
+class GithubProjectToken(TokenMixin):
+    def __init__(self):
+        self.gh = None
+        self.prj = None
+
 class GithubToken(TokenMixin):
     def __init__(self):
         self.gh = None
 
 class ComputeURLHandler(webutil.RequestHandler):
     def post(self):
-        "aaaaa"
+        params = self.read_json()
+        ret = GithubProjectToken()
+        ret.gh = GithubToken.dec(params['token']).gh
+        ret.prj = params['project']
+        self.send_json(ret.enc())
 
 class OAuthLoginHandler(webutil.RequestHandler):
     def get(self):

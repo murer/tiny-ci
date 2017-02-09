@@ -37,6 +37,11 @@ class Request(object):
         }
         self._payload = None
 
+    def send_json(self, payload):
+        self.headers['Content-Type'] = self.headers.get('Content-Type', 'application/json; charset=UTF-8')
+        self._payload = JSON.stringify(payload or {})
+        return self
+
     def send_form(self, payload):
         self.headers['Content-Type'] = self.headers.get('Content-Type', 'application/x-www-form-urlencoded')
         self._payload = urllib.urlencode(payload or {})

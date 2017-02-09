@@ -1,5 +1,6 @@
 from unittest import TestCase
 from tinyciapi.util import codecutil as codec
+import unittest
 
 class CodecTestCase(TestCase):
 

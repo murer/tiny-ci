@@ -1,5 +1,6 @@
 from unittest import TestCase
 from tinyciapi.util.singleton import SingletonMixin
+import unittest
 
 class A1(SingletonMixin):
     """ singleton """

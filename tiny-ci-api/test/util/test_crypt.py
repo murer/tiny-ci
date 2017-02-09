@@ -1,6 +1,7 @@
 from unittest import TestCase
 from tinyciapi.util.cryptutil import AES
 from tinyciapi.util.cryptutil import Crypt
+import unittest
 
 class CryptTestCase(TestCase):
 

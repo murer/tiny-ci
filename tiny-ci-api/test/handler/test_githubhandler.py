@@ -1,13 +1,23 @@
-from supertest import TestCase
-from supertest import R
+from test.supertest import TestCase
+from test.supertest import R
 from google.appengine.ext import ndb
+import unittest
+from tinyciapi.handler import githubhandler
 
 class OneTestCase(TestCase):
 
     def test_web(self):
-        resp = R('POST', '/api/github/computeurl').execute()
+        token = githubhandler.GithubToken()
+        token.gh = 'any'
+        resp = R('POST', '/api/github/computeurl').send_json({
+            'token': token.enc(),
+            'project': 'murer/tiny-ci'
+        }).execute()
         self.assertEqual('application/json; charset=utf-8', resp.headers['content-type'])
-        self.assertEqual('OK', resp.body_json())
+        token = resp.body_json()
+        token = githubhandler.GithubProjectToken.dec(token)
+        self.assertEqual('murer/tiny-ci', token.prj)
+        self.assertTrue(token.gh)
 
 if __name__ == '__main__':
         unittest.main()
