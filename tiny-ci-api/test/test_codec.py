@@ -11,6 +11,8 @@ class CodecTestCase(TestCase):
     def assertUB64(self, plain, code):
         self.assertEqual(code, codec.ub64enc(plain))
         self.assertEqual(plain, codec.ub64dec(code))
+        self.assertEqual(code, codec.enc(plain))
+        self.assertEqual(plain, codec.dec(code))
 
     def test_b64(self):
         self.assertB64('\x00\x00\x00', 'AAAA')
