@@ -1,17 +1,8 @@
 import unittest
 from test.supertest import TestCase
 from tinyciapi.service.cryptservice import crypt
-from tinyciapi.util.jsonutil import JSON
-
-class SampleToken(object):
-
-    def __init__(self):
-        self.name = None
-        self.value = None
-
-    def enc(self):
-        ret = JSON.stringify(self.__dict__)
-        return ret
+from tinyciapi.service.cryptservice import SampleToken
+from tinyciapi.util import codecutil
 
 class CryptTestCase(TestCase):
 
@@ -37,7 +28,12 @@ class CryptTestCase(TestCase):
         token = SampleToken()
         token.name = 'test'
         token.value = 'any'
-        print 'code', token.enc()
+        code = token.enc()
+        self.assertNotEqual(code, token.enc())
+        parsed = SampleToken.dec(code)
+        self.assertEqual('test', parsed.name)
+        self.assertEqual('any', parsed.value)
+        self.assertNotEqual(token, parsed)
 
 if __name__ == '__main__':
         unittest.main()

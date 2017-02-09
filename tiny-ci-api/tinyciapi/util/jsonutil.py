@@ -2,8 +2,8 @@ import json
 
 class JsonUtil(object):
 
-    def stringify(self, obj, indent=False):
-        return json.dumps(obj, indent=False)
+    def stringify(self, obj, indent=None):
+        return json.dumps(obj)
 
     def parse(self, data):
         return json.loads(data)

@@ -1,7 +1,11 @@
 from tinyciapi.util.singleton import SingletonMixin
 from tinyciapi.util.cryptutil import Crypt as _Crypt
 from tinyciapi.util import codecutil
+from tinyciapi.util.jsonutil import JSON
 from ent import Secret
+
+class Error(Exception):
+    """Exceptions"""
 
 class Crypt(_Crypt, SingletonMixin):
 
@@ -19,3 +23,28 @@ class Crypt(_Crypt, SingletonMixin):
 
 def crypt():
     return Crypt.me()
+
+
+class SampleToken(object):
+
+    def __init__(self):
+        self.name = None
+        self.value = None
+
+    @classmethod
+    def dec(cls, code):
+        code = codecutil.dec(code)
+        code = crypt().dec(code)
+        name, code = code.split('.')
+        if name != cls.__name__:
+            raise Error('wrong class, expected: %s, but was: %s' % (cls.__name__, name))
+        code = JSON.parse(code)
+        ret = cls()
+        ret.__dict__.update(code)
+        return ret
+
+    def enc(self):
+        ret = '%s.%s' % (self.__class__.__name__, JSON.stringify(self.__dict__))
+        ret = crypt().enc(ret)
+        ret = codecutil.enc(ret)
+        return ret
