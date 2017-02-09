@@ -4,8 +4,13 @@ from google.appengine.api import taskqueue
 from tinyciapi.util import webutil
 from tinyciapi.util.jsonutil import JSON
 from tinyciapi.util.httputil import Request as HTTP
+from tinyciapi.service.cryptservice import TokenMixin
 
 # https://api.github.com/meta
+
+class GithubToken(TokenMixin):
+    def __init__(self):
+        self.gh = None
 
 class OAuthLoginHandler(webutil.RequestHandler):
     def get(self):
@@ -25,9 +30,9 @@ class OAuthCallbackHandler(webutil.RequestHandler):
             'code': code,
             'redirect_uri': 'https://tiny-ci.appspot.com/api/github/oauthcallback'
         }).execute()
-
-        resp.body_form()['access_token']
-        self.send_json(resp.body_form())
+        ret = GithubToken()
+        ret.gh = resp.body_form()['access_token']
+        self.send_json(ret.enc())
 
 class WebhookHandler(webutil.RequestHandler):
     def post(self):
