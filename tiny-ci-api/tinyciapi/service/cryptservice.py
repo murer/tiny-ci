@@ -25,11 +25,7 @@ def crypt():
     return Crypt.me()
 
 
-class SampleToken(object):
-
-    def __init__(self):
-        self.name = None
-        self.value = None
+class TokenMixin(object):
 
     @classmethod
     def dec(cls, code):
