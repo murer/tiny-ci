@@ -25,6 +25,8 @@ class OAuthCallbackHandler(webutil.RequestHandler):
             'code': code,
             'redirect_uri': 'https://tiny-ci.appspot.com/api/github/oauthcallback'
         }).execute()
+
+        resp.body_form()['access_token']
         self.send_json(resp.body_form())
 
 class WebhookHandler(webutil.RequestHandler):

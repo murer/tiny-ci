@@ -32,6 +32,7 @@ class TokenMixin(object):
         code = codecutil.dec(code)
         code = crypt().dec(code)
         name, code = code.split('.')
+        name += 'Token'
         if name != cls.__name__:
             raise Error('wrong class, expected: %s, but was: %s' % (cls.__name__, name))
         code = JSON.parse(code)
@@ -40,7 +41,11 @@ class TokenMixin(object):
         return ret
 
     def enc(self):
-        ret = '%s.%s' % (self.__class__.__name__, JSON.stringify(self.__dict__))
+        name = self.__class__.__name__
+        if not name.endswith('Token'):
+            raise Error('Token class must end with Token, but was: %s' % (name))
+        name = name[:-5]
+        ret = '%s.%s' % (name, JSON.stringify(self.__dict__))
         ret = crypt().enc(ret)
         ret = codecutil.enc(ret)
         return ret
