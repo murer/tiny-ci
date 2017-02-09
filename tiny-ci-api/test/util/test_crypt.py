@@ -3,7 +3,7 @@ from tinyciapi.util.cryptutil import AES
 from tinyciapi.util.cryptutil import Crypt
 from supertest import TestCase
 
-class CodecTestCase(TestCase):
+class CryptTestCase(TestCase):
 
     def assertOneCrypt(self, crypt, plain):
         code1 = crypt.enc(plain)
@@ -18,7 +18,7 @@ class CodecTestCase(TestCase):
         self.assertOneCrypt(Crypt('abcdefghijklmnopqrstuvwxyz012345'), plain)
         self.assertOneCrypt(Crypt(), plain)
 
-    def test_AES(self):
+    def test_crypt(self):
         self.assertCrypt('')
         self.assertCrypt('A')
         self.assertCrypt('test')
