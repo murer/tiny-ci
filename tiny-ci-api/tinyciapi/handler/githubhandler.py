@@ -52,7 +52,9 @@ class OAuthCallbackHandler(webutil.RequestHandler):
         self.send_json(ret.enc())
 
 class WebhookHandler(webutil.RequestHandler):
-    def post(self):
+    def post(self, token):
+        token = GithubProjectToken.dec(token)
+        print 'validate', token.prj
         LOG.info('remove: %s' % (self.request.remote_addr))
         LOG.info('headers: %s' % (self.request.headers))
         body = self.read_json()
