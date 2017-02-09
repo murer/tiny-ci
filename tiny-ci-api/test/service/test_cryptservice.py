@@ -10,7 +10,8 @@ class SampleToken(object):
         self.value = None
 
     def enc(self):
-        return JSON.stringify(self.__dict__)
+        ret = JSON.stringify(self.__dict__)
+        return ret
 
 class CryptTestCase(TestCase):
 
