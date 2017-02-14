@@ -24,4 +24,4 @@ class R(HTTP):
 
     def __init__(self, *args, **kwargs):
         super(R, self).__init__(*args, **kwargs)
-        self._url = 'http://localhost:%s%s' % (gae.port, self._url)
+        self.url = 'http://localhost:%s%s' % (gae.port, self.url)
