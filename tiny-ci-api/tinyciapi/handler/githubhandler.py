@@ -6,6 +6,7 @@ from tinyciapi.util import webutil
 from tinyciapi.util.jsonutil import JSON
 from tinyciapi.util.httputil import Request as HTTP
 from tinyciapi.service.cryptservice import TokenMixin
+from tinyciapi.service.ent import User
 
 
 # https://api.github.com/meta
@@ -61,6 +62,15 @@ class OAuthCallbackHandler(webutil.RequestHandler):
         req.add_header('Authorization', 'token %s' % (token))
         ghUser = req.execute().body_json()
         print JSON.stringify(ghUser)
+        userId = str(ghUser['id'])
+        user = User.get_by_id(userId
+        if not user:
+            user = User(
+                id = userId,
+                githubUser = ghUser['login'],
+                githubToken = token
+            )
+            user.put()
         self.send_redirect(dest)
         #ret = GithubToken()
         #ret.gh = resp.body_form()['access_token']
