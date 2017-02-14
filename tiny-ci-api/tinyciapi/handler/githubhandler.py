@@ -50,10 +50,15 @@ class OAuthCallbackHandler(webutil.RequestHandler):
             'code': code,
             'redirect_uri': 'https://tiny-ci.appspot.com/api/github/oauthcallback'
         }).execute()
-        ret = GithubToken()
-        ret.gh = resp.body_form()['access_token']
-        LOG.info('token: %s' % (ret.gh))
-        self.send_json(ret.enc())
+        token = resp.body_form()['access_token']
+        LOG.info('token: %s' % (token))
+        ghUser = HTTP('GET', 'https://api.github.com/user').execute().body_json()
+        self.send_json(ghUser)
+        #ret = GithubToken()
+        #ret.gh = resp.body_form()['access_token']
+        #LOG.info('token: %s' % (ret.gh))
+        #
+        #self.send_json(ret.enc())
 
 class WebhookHandler(webutil.RequestHandler):
     def post(self, token):
