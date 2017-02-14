@@ -1,3 +1,4 @@
+import urllib
 import webapp2
 import logging as LOG
 from google.appengine.api import taskqueue
@@ -5,6 +6,7 @@ from tinyciapi.util import webutil
 from tinyciapi.util.jsonutil import JSON
 from tinyciapi.util.httputil import Request as HTTP
 from tinyciapi.service.cryptservice import TokenMixin
+
 
 # https://api.github.com/meta
 
@@ -34,15 +36,18 @@ class ComputeURLHandler(webutil.RequestHandler):
 
 class OAuthLoginHandler(webutil.RequestHandler):
     def get(self):
+        dest = self.request.GET.get('dest', '/')
+        redirect_url = 'https://tiny-ci.appspot.com/api/github/oauthcallback?%s' % (urllib.urlencode({ 'dest': dest }))
         self.send_redirect('https://github.com/login/oauth/authorize', {
             'client_id': 'ccfa4f997ce81263aa9b',
-            'redirect_uri': 'https://tiny-ci.appspot.com/api/github/oauthcallback',
+            'redirect_uri': redirect_url,
             'scope': 'repo'
         })
 
 class OAuthCallbackHandler(webutil.RequestHandler):
     def get(self):
         code = self.request.GET['code']
+        dest = self.request.GET.get('dest', '/')
         req = HTTP('POST', 'https://github.com/login/oauth/access_token')
         resp = req.send_form({
             'client_id': 'ccfa4f997ce81263aa9b',
@@ -52,8 +57,11 @@ class OAuthCallbackHandler(webutil.RequestHandler):
         }).execute()
         token = resp.body_form()['access_token']
         LOG.info('token: %s' % (token))
-        ghUser = HTTP('GET', 'https://api.github.com/user').execute().body_json()
-        self.send_json(ghUser)
+        req = HTTP('GET', 'https://api.github.com/user')
+        req.add_header('Authorization', 'token %s' % (token))
+        ghUser = req.execute().body_json()
+        print JSON.stringify(ghUser)
+        self.send_redirect(dest)
         #ret = GithubToken()
         #ret.gh = resp.body_form()['access_token']
         #LOG.info('token: %s' % (ret.gh))

@@ -16,6 +16,10 @@ class RequestHandler(webapp2.RequestHandler):
     def read_json(self):
         return JSON.parse(self.request.body) if self.request.body else None
 
-    def send_redirect(self, url, params):
-        params = urllib.urlencode(params)
+    def send_redirect(self, url, params = None):
+        params = urllib.urlencode(params) if params else None
+        if not params:
+            return self.redirect(url)
+        if params.find('?') >= 0:
+            return self.redirect('%s&%s' % (url, params))
         return self.redirect('%s?%s' % (url, params))
