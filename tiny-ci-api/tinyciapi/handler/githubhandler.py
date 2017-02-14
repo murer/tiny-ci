@@ -52,6 +52,7 @@ class OAuthCallbackHandler(webutil.RequestHandler):
         }).execute()
         ret = GithubToken()
         ret.gh = resp.body_form()['access_token']
+        LOG.info('token: %s' % (ret.gh))
         self.send_json(ret.enc())
 
 class WebhookHandler(webutil.RequestHandler):
